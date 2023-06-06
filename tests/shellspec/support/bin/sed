@@ -1,0 +1,4 @@
+#!/bin/sh -e
+# shellcheck disable=SC1090
+. "$SHELLSPEC_SUPPORT_BIN"
+invoke sed "$@"

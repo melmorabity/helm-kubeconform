@@ -1,0 +1,15 @@
+---
+- id: helm-kubeconform
+  name: Helm charts validation
+  description: validate Helm charts using Kubeconform
+  entry: pre_commit_wrapper.py validate-charts
+  language: script
+  require_serial: true
+- id: helm-kubeconform-values
+  name: Helm chart values validation
+  description: validate values against a Helm chart using Kubeconform
+  entry: pre_commit_wrapper.py validate-values
+  language: script
+  types_or:
+    - yaml
+    - json

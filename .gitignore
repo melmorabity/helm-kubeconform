@@ -1,0 +1,10 @@
+__pycache__
+.*-cache
+.coverage
+.shellspec-quick.log
+.tox
+.venv
+.vscode
+*.egg-info
+/bin
+coverage

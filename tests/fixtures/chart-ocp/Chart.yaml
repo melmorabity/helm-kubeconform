@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: test-ocp
+description: A Helm chart for OpenShift
+type: application
+version: 0.1.0
+appVersion: 1.16.0
