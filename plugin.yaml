@@ -1,0 +1,11 @@
+---
+name: kubeconform
+version: 0.6.3.1
+usage: Validate Helm charts using Kubeconform
+description: This plugin validates Helm charts using Kubeconform
+ignoreFlags: false
+command: python $HELM_PLUGIN_DIR/helm_kubeconform/plugin.py
+platformCommand:
+hooks:
+  install: $HELM_PLUGIN_DIR/helm_kubeconform/install.sh
+  update: $HELM_PLUGIN_DIR/helm_kubeconform/install.sh

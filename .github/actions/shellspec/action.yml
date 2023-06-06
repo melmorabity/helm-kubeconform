@@ -1,0 +1,20 @@
+---
+name: Install ShellSpec
+description: Install ShellSpec
+inputs:
+  shell:
+    description: Installation shell
+    default: sh
+runs:
+  using: composite
+  steps:
+    - name: Install ShellSpec
+      shell: ${{ inputs.shell }}
+      run: |
+        PREFIX=$HOME/.local
+        SHELLSPEC_RELEASE=$(git -c "versionsort.suffix=-" ls-remote --refs --tags --sort="v:refname" https://github.com/shellspec/shellspec '*.*.*' | awk -F "/" 'END { gsub(/\r/, "", $3); print $3; }')
+        mkdir -p "$PREFIX/bin" "$PREFIX/lib" "$PREFIX/doc/shellspec"
+        curl -L "https://github.com/shellspec/shellspec/releases/download/$SHELLSPEC_RELEASE/shellspec-dist.tar.gz" -o - | tar -xz -C "$PREFIX/lib"
+        ln -sf "$PREFIX/lib/shellspec/shellspec" "$PREFIX/bin"
+        ln -sf "$PREFIX/lib/LICENSE" "$PREFIX/doc/shellspec"
+        echo "$PREFIX/bin" >>"$GITHUB_PATH"

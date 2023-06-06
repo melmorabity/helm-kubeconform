@@ -1,0 +1,5 @@
+--covdir coverage/shellspec
+--default-path tests/shellspec
+--helperdir tests/shellspec
+--kcov-options "--exclude-path=.tox,.venv,build,tests"
+--require spec_helper

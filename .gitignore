@@ -1,0 +1,11 @@
+*.egg-info
+.*_cache
+.coverage
+.shellspec-quick.log
+.tox
+.venv
+__pycache__
+build
+coverage
+dist
+kubeconform
