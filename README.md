@@ -186,7 +186,7 @@ To enable the hook, add the following lines to the `repos` list in the project's
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.2-1
+    rev: 0.6.3.1
     hooks:
       - id: helm-kubeconform
 ```
@@ -196,7 +196,7 @@ This hook supports all options provided by the Helm plugin (using the `args` key
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.2-1
+    rev: 0.6.3.1
     hooks:
       - id: helm-kubeconform
         files: ^tests/fixtures/chart-.+?/
@@ -211,7 +211,7 @@ To enable the hook, add the following lines to the `repos` list in the project's
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.2.1
+    rev: 0.6.3.1
     hooks:
       - id: helm-kubeconform-values
 ```
@@ -221,7 +221,7 @@ This hook supports all options provided by the Helm plugin but requires a chart 
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.2.1
+    rev: 0.6.3.1
     hooks:
       - id: helm-kubeconform-values
         args:

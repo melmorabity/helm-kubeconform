@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     if platform.system() == "Windows":
         env["SHELLOPTS"] = "igncr"
 
-    # Ensure kubeconform is installed
+    # Ensure Kubeconform is installed
     if not Path(helm_kubeconform.plugin.KUBECONFORM_BIN).is_file():
         try:
             subprocess.run(

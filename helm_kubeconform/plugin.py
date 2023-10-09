@@ -51,7 +51,7 @@ _HELM_KUBECONFORM_COMMON_FLAGS = {
     "--debug": "-debug",
     "--kube-version": "-kubernetes-version",
 }
-# Kubeconform flags to disabe
+# Kubeconform flags to disable
 _KUBECONFORM_IGNORED_FLAGS = {
     # Handled by ArgumentParser
     "-h",
@@ -129,8 +129,8 @@ def _get_all_helm_chart_directories(*path: Path) -> set[Path]:
     }
 
 
-# For all chart file passed to the function:
-# - get the Helm chart directories they belong to
+# For all chart files passed to the function:
+# - get the Helm chart directory they belong to
 # - validate each chart directory
 # - stop and return status when a chart fails to validate with the specified
 #   values
