@@ -41,9 +41,9 @@ def main(argv: list[str] | None = None) -> int:
         ).version,
         # Ensure that the Kubeconform installation script has access to the
         # network environment variables
-        "http_proxy": os.getenv("http_proxy", ""),  # ruff: noqa: SIM112
-        "https_proxy": os.getenv("https_proxy", ""),  # ruff: noqa: SIM112
-        "no_proxy": os.getenv("no_proxy", ""),  # ruff: noqa: SIM112
+        "http_proxy": os.getenv("http_proxy", ""),  # noqa: SIM112
+        "https_proxy": os.getenv("https_proxy", ""),  # noqa: SIM112
+        "no_proxy": os.getenv("no_proxy", ""),  # noqa: SIM112
         "HTTP_PROXY": os.getenv("HTTP_PROXY", ""),
         "HTTPS_PROXY": os.getenv("HTTPS_PROXY", ""),
         "NO_PROXY": os.getenv("NO_PROXY", ""),

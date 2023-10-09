@@ -114,6 +114,7 @@ ignore = [
   "COM812", # flake8-commas
   "FBT",    # flake8-boolean-trap
   "PT009",  # flake8-pytest-style
+  "PT027",  # flake8-pytest-style
   "S603",   # flake8-bandit
   "S607",   # flake8-bandit
   "TRY",    # tryceratops
