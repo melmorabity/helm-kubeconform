@@ -11,7 +11,7 @@ This plugin was inspired by the [Kubeval Helm plugin](https://github.com/instrum
 Install the latest version of the plugin using the built-in plugin manager:
 
 ```console
-helm plugin install https://github.com/melmorabity/helm-kubeconform --version 0.6.3.1
+helm plugin install https://github.com/melmorabity/helm-kubeconform --version 0.6.3.2
 ```
 
 The installer will download and install the Kubeconform binary available for the running platform. As a result, this plugin only supports platforms for which a binary is available [on the Kubeconform release page](https://github.com/yannh/kubeconform/releases).
@@ -186,7 +186,7 @@ To enable the hook, add the following lines to the `repos` list in the project's
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.3.1
+    rev: 0.6.3.2
     hooks:
       - id: helm-kubeconform
 ```
@@ -196,7 +196,7 @@ This hook supports all options provided by the Helm plugin (using the `args` key
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.3.1
+    rev: 0.6.3.2
     hooks:
       - id: helm-kubeconform
         files: ^tests/fixtures/chart-.+?/
@@ -211,7 +211,7 @@ To enable the hook, add the following lines to the `repos` list in the project's
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.3.1
+    rev: 0.6.3.2
     hooks:
       - id: helm-kubeconform-values
 ```
@@ -221,7 +221,7 @@ This hook supports all options provided by the Helm plugin but requires a chart 
 ```yaml
 repos:
   - repo: https://github.com/melmorabity/helm-kubeconform
-    rev: 0.6.3.1
+    rev: 0.6.3.2
     hooks:
       - id: helm-kubeconform-values
         args:
