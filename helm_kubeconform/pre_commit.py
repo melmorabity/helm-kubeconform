@@ -6,14 +6,13 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+import importlib.metadata
 import os
 from pathlib import Path
 import platform
 import subprocess
 from subprocess import CalledProcessError
 import sys
-
-import pkg_resources
 
 import helm_kubeconform.plugin
 
@@ -36,9 +35,7 @@ def main(argv: list[str] | None = None) -> int:
 
     env = {
         "HELM_PLUGIN_DIR": helm_kubeconform.plugin.HELM_PLUGIN_DIR,
-        "HELM_PLUGIN_VERSION": pkg_resources.get_distribution(
-            "helm-kubeconform"
-        ).version,
+        "HELM_PLUGIN_VERSION": importlib.metadata.version("helm-kubeconform"),
         # Ensure that the Kubeconform installation script has access to the
         # network environment variables
         "http_proxy": os.getenv("http_proxy", ""),  # noqa: SIM112

@@ -45,14 +45,6 @@ repos:
       - id: flake8
         additional_dependencies:
           - Flake8-pyproject
-  - repo: https://github.com/PyCQA/pylint
-    rev: v3.0.1
-    hooks:
-      - id: pylint
-        args:
-          - --enable-all-extensions
-        additional_dependencies:
-          - pylint_per_file_ignores
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.0.292
     hooks:
@@ -94,6 +86,14 @@ repos:
           - --disable=MD013
   - repo: local
     hooks:
+      - id: pylint
+        name: Pylint
+        entry: pylint
+        args:
+          - --enable-all-extensions
+        language: system
+        types:
+          - python
       - id: mypy
         name: Mypy
         entry: mypy

@@ -4,14 +4,13 @@
 from __future__ import annotations
 
 import contextlib
+import importlib.metadata
 from io import StringIO
 from subprocess import CalledProcessError
 import sys
 from typing import Any
 from unittest import TestCase
 import unittest.mock
-
-import pkg_resources
 
 import helm_kubeconform.plugin
 import helm_kubeconform.pre_commit
@@ -87,9 +86,9 @@ class TestPreCommit(TestCase):
                         "HELM_PLUGIN_DIR": str(
                             helm_kubeconform.plugin.HELM_PLUGIN_DIR
                         ),
-                        "HELM_PLUGIN_VERSION": pkg_resources.get_distribution(
+                        "HELM_PLUGIN_VERSION": importlib.metadata.version(
                             "helm-kubeconform"
-                        ).version,
+                        ),
                         "http_proxy": unittest.mock.ANY,
                         "https_proxy": unittest.mock.ANY,
                         "no_proxy": unittest.mock.ANY,
