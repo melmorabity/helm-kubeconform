@@ -38,9 +38,9 @@ def main(argv: list[str] | None = None) -> int:
         "HELM_PLUGIN_VERSION": importlib.metadata.version("helm-kubeconform"),
         # Ensure that the Kubeconform installation script has access to the
         # network environment variables
-        "http_proxy": os.getenv("http_proxy", ""),  # noqa: SIM112
-        "https_proxy": os.getenv("https_proxy", ""),  # noqa: SIM112
-        "no_proxy": os.getenv("no_proxy", ""),  # noqa: SIM112
+        "http_proxy": os.getenv("http_proxy", ""),
+        "https_proxy": os.getenv("https_proxy", ""),
+        "no_proxy": os.getenv("no_proxy", ""),
         "HTTP_PROXY": os.getenv("HTTP_PROXY", ""),
         "HTTPS_PROXY": os.getenv("HTTPS_PROXY", ""),
         "NO_PROXY": os.getenv("NO_PROXY", ""),
