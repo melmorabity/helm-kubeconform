@@ -32,7 +32,7 @@ repos:
           - --option=reorder_arrays=true
           - --option=reorder_keys=true
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.11.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/isort
@@ -46,7 +46,7 @@ repos:
         additional_dependencies:
           - Flake8-pyproject
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.292
+    rev: v0.1.6
     hooks:
       - id: ruff
   - repo: https://github.com/PyCQA/bandit
@@ -65,9 +65,9 @@ repos:
         additional_dependencies:
           - .[toml]
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-1
+    rev: v3.7.0-3
     hooks:
-      - id: shfmt
+      - id: shfmt-src
         args:
           - --indent=4
           - --binary-next-line
