@@ -9,7 +9,7 @@ PRE_COMMIT_HOME=/tmp/helm-kubeconform
 
 K8S_CHART_DIR=$REPO_DIR/tests/fixtures/chart-k8s
 OCP_CHART_DIR=$REPO_DIR/tests/fixtures/chart-ocp
-OCP_SCHEMA_URL="https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/{{ .NormalizedKubernetesVersion }}-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json"
+OCP_SCHEMA_URL="https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/v4.14-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json"
 VALID_VALUES_FILE=$REPO_DIR/tests/fixtures/good_values.yaml
 INVALID_VALUES_FILE=$REPO_DIR/tests/fixtures/bad_values.yaml
 
@@ -89,7 +89,7 @@ The error should be blank
 End
 Example "with valid OpenShift chart files in $OCP_CHART_DIR"
 {
-    setUpPreCommit "$PRE_COMMIT_CONF_FILE" helm-kubeconform "['--kube-version', '4.10', '--schema-location', '$OCP_SCHEMA_URL']"
+    setUpPreCommit "$PRE_COMMIT_CONF_FILE" helm-kubeconform "['--schema-location', '$OCP_SCHEMA_URL']"
 }
 When run command pre-commit run -c "$PRE_COMMIT_CONF_FILE" helm-kubeconform --files "$OCP_CHART_DIR${FILE_SEP}values.yaml" "$OCP_CHART_DIR${FILE_SEP}templates${FILE_SEP}_helpers.tpl"
 The status should be success
@@ -133,7 +133,7 @@ The error should be blank
 End
 Example "with OpenShift chart $OCP_CHART_DIR and valid values file $VALID_VALUES_FILE"
 {
-    setUpPreCommit "$PRE_COMMIT_CONF_FILE" helm-kubeconform-values "['$K8S_CHART_DIR', '--kube-version', '4.10', '--schema-location', '$OCP_SCHEMA_URL']"
+    setUpPreCommit "$PRE_COMMIT_CONF_FILE" helm-kubeconform-values "['$K8S_CHART_DIR', '--schema-location', '$OCP_SCHEMA_URL']"
 }
 When run command pre-commit run -c "$PRE_COMMIT_CONF_FILE" helm-kubeconform-values --files "$VALID_VALUES_FILE"
 The status should be success

@@ -164,7 +164,7 @@ Error: plugin "kubeconform" exited with error
 The plugin supports schema location override, [just like Kubeconform](https://github.com/yannh/kubeconform#Overriding-schemas-location). CRDs can be passed to the plugin using the `--schema-location` option, as well as OpenShift JSON schemas:
 
 ```console
-$ helm kubeconform tests/fixtures/chart-ocp/ --kube-version 4.10 --schema-location 'https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/{{ .NormalizedKubernetesVersion }}-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json' --verbose --summary
+$ helm kubeconform tests/fixtures/chart-ocp/ --schema-location 'https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/v4.14-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json' --verbose --summary
 stdin - Service release-name-test-ocp is valid
 stdin - DeploymentConfig release-name-test-ocp is valid
 Summary: 2 resources found parsing stdin - Valid: 2, Invalid: 0, Errors: 0, Skipped: 0

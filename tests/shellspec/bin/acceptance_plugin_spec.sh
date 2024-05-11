@@ -7,7 +7,7 @@ eval "$(helm env)"
 HELM_BIN=$(command -v helm)
 K8S_CHART_LOCATION=$PWD/tests/fixtures/chart-k8s
 OCP_CHART_LOCATION=$PWD/tests/fixtures/chart-ocp
-OCP_SCHEMA_URL="https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/{{ .NormalizedKubernetesVersion }}-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json"
+OCP_SCHEMA_URL="https://raw.githubusercontent.com/melmorabity/openshift-json-schemas/main/v4.14-standalone{{ .StrictSuffix }}/{{ .ResourceKind }}.json"
 VALID_CHART_VALUES=$PWD/tests/fixtures/good_values.yaml
 INVALID_CHART_VALUES=$PWD/tests/fixtures/bad_values.yaml
 KUBECONFORM_BIN=$HELM_PLUGINS/helm-kubeconform/kubeconform
@@ -152,13 +152,13 @@ Parameters
 "--values"
 End
 Example "$OCP_CHART_LOCATION with valid values $VALID_CHART_VALUES"
-When run command helm kubeconform "$K8S_CHART_LOCATION" "$1" "$VALID_CHART_VALUES" --kube-version 4.10 --schema-location "$OCP_SCHEMA_URL"
+When run command helm kubeconform "$K8S_CHART_LOCATION" "$1" "$VALID_CHART_VALUES" --schema-location "$OCP_SCHEMA_URL"
 The status should be success
 The output should be blank
 The error should be blank
 End
 Example "$OCP_CHART_LOCATION with invalid values $INVALID_CHART_VALUES"
-When run command helm kubeconform "$K8S_CHART_LOCATION" "$1" "$INVALID_CHART_VALUES" --kube-version 4.10 --schema-location "$OCP_SCHEMA_URL"
+When run command helm kubeconform "$K8S_CHART_LOCATION" "$1" "$INVALID_CHART_VALUES" --schema-location "$OCP_SCHEMA_URL"
 The status should be failure
 The error should include "expected integer or null, but got string"
 The error should include 'Error: plugin "kubeconform" exited with error'
