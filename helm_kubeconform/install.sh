@@ -97,7 +97,7 @@ case $ARCH in
         fi
         KUBECONFORM_ARCH=386
         ;;
-    aarch64)
+    aarch64 | arm64)
         KUBECONFORM_ARCH=arm64
         ;;
     arm*)

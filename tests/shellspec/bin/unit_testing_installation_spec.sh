@@ -69,7 +69,7 @@ platform_mocks() {
 
 Describe "Install plugin"
 Parameters:matrix
-Linux/x86_64 Linux/i686 Linux/aarch64 Linux/armv7l Darwin/x86_64 Darwin/aarch64 CYGWIN_NT-10.0-1904/x86_64 CYGWIN_NT-10.0-1904/i686 MINGW64_NT-10.0-19044/x86_64 MINGW64_NT-10.0-19044/aarch64 MINGW32_NT-10.0-19044/armv8l
+Linux/x86_64 Linux/i686 Linux/aarch64 Linux/armv7l Darwin/x86_64 Darwin/arm64 CYGWIN_NT-10.0-1904/x86_64 CYGWIN_NT-10.0-1904/i686 MINGW64_NT-10.0-19044/x86_64 MINGW64_NT-10.0-19044/aarch64 MINGW32_NT-10.0-19044/armv8l
 # shellcheck disable=SC2218
 curl wget
 false true
@@ -92,7 +92,7 @@ Example "on $1 with $2 available"
     case "$arch" in
         x86_64) kubeconformArch=amd64 ;;
         i*86) kubeconformArch=386 ;;
-        aarch64) kubeconformArch=arm64 ;;
+        aarch64 | arm64) kubeconformArch=arm64 ;;
         arm*) kubeconformArch=armv6 ;;
     esac
 
