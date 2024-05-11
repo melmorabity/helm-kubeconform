@@ -3,6 +3,8 @@
 
 """Distutils installer for helm-kubeconform."""
 
+from __future__ import annotations
+
 import setuptools
 
 if __name__ == "__main__":

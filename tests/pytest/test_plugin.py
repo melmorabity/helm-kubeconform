@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: © 2023 Mohamed El Morabity
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from __future__ import annotations
+
 import contextlib
 from io import StringIO
 import os
@@ -8,10 +10,14 @@ from pathlib import Path
 import re
 from subprocess import CalledProcessError
 import sys
+import typing
 from unittest import TestCase
 import unittest.mock
 
 import helm_kubeconform.plugin
+
+if typing.TYPE_CHECKING:
+    from typing_extensions import Self
 
 MOCK_HELM_TEMPLATE_HELP = """
 Usage:
@@ -48,7 +54,7 @@ Usage: kubeconform [OPTION]... [FILE OR FOLDER]...
 
 
 class TestRun(TestCase):
-    def setUp(self) -> None:
+    def setUp(self: Self) -> None:
         subprocess_patch = unittest.mock.patch(
             "helm_kubeconform.plugin.subprocess"
         )
@@ -60,7 +66,7 @@ class TestRun(TestCase):
             MOCK_KUBECONFORM_HELP,
         ]
 
-    def test_help(self) -> None:
+    def test_help(self: Self) -> None:
         stdout = StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(
             SystemExit
@@ -83,7 +89,7 @@ class TestRun(TestCase):
         self.assertNotIn("--insecure-skip-tls-verify", stdout.getvalue())
         self.assertNotIn("--kubernetes-version", stdout.getvalue())
 
-    def test_options(self) -> None:
+    def test_options(self: Self) -> None:
         test_args = (
             {
                 "plugin_args": ["chart"],
@@ -189,7 +195,7 @@ class TestRun(TestCase):
                 self.assertEqual(self.subprocess_mock.run.call_count, 2)
 
     @unittest.mock.patch("helm_kubeconform.plugin.HELM_DEBUG", "true")
-    def test_helm_debug(self) -> None:
+    def test_helm_debug(self: Self) -> None:
         calls = [
             unittest.mock.call(
                 [
@@ -225,7 +231,7 @@ class TestRun(TestCase):
             context_manager.output,
         )
 
-    def test_help_processing_failure(self) -> None:
+    def test_help_processing_failure(self: Self) -> None:
         errors = [
             {
                 "exception": CalledProcessError(1, "helm template --help"),
@@ -247,7 +253,7 @@ class TestRun(TestCase):
                 return_code = helm_kubeconform.plugin.main(argv=["chart"])
                 self.assertEqual(return_code, error["return_code"])
 
-    def test_helm_template_failure(self) -> None:
+    def test_helm_template_failure(self: Self) -> None:
         self.subprocess_mock.run.side_effect = CalledProcessError(
             2, "helm template"
         )
@@ -257,7 +263,7 @@ class TestRun(TestCase):
         self.assertEqual(return_code, 2)
         self.assertEqual(self.subprocess_mock.run.call_count, 1)
 
-    def test_kubeconform_failure(self) -> None:
+    def test_kubeconform_failure(self: Self) -> None:
         self.subprocess_mock.run.side_effect = [
             unittest.mock.DEFAULT,
             CalledProcessError(2, "kubeconform"),
@@ -267,7 +273,7 @@ class TestRun(TestCase):
         self.assertEqual(return_code, 2)
         self.assertEqual(self.subprocess_mock.run.call_count, 2)
 
-    def test_chart_files_as_args(self) -> None:
+    def test_chart_files_as_args(self: Self) -> None:
         return_code = helm_kubeconform.plugin.main(
             argv=[
                 str(Path("/does/not/exist")),
@@ -303,7 +309,7 @@ class TestRun(TestCase):
 
         self.assertEqual(self.subprocess_mock.run.call_count, 4)
 
-    def test_chart_file_as_args_failure(self) -> None:
+    def test_chart_file_as_args_failure(self: Self) -> None:
         self.subprocess_mock.run.side_effect = [
             unittest.mock.DEFAULT,
             CalledProcessError(2, "kubeconform"),
@@ -329,7 +335,7 @@ class TestRun(TestCase):
             rf"ERROR:root:Helm chart ({test_paths_regex}) validation failed",
         )
 
-    def test_values_as_args(self) -> None:
+    def test_values_as_args(self: Self) -> None:
         values = ["values1.yml", "values2.yml"]
         return_code = helm_kubeconform.plugin.main(
             argv=["chart", *values], validate_values_files=True
@@ -362,7 +368,7 @@ class TestRun(TestCase):
 
         self.assertEqual(self.subprocess_mock.run.call_count, 2 * len(values))
 
-    def test_values_as_args_failure(self) -> None:
+    def test_values_as_args_failure(self: Self) -> None:
         self.subprocess_mock.run.side_effect = [
             CalledProcessError(1, "helm template"),
             CalledProcessError(2, "kubeconform"),

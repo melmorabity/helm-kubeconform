@@ -8,6 +8,7 @@ import importlib.metadata
 from io import StringIO
 from subprocess import CalledProcessError
 import sys
+import typing
 from typing import Any
 from unittest import TestCase
 import unittest.mock
@@ -15,9 +16,12 @@ import unittest.mock
 import helm_kubeconform.plugin
 import helm_kubeconform.pre_commit
 
+if typing.TYPE_CHECKING:
+    from typing_extensions import Self
+
 
 class TestPreCommit(TestCase):
-    def setUp(self) -> None:
+    def setUp(self: Self) -> None:
         subprocess_patch = unittest.mock.patch(
             "helm_kubeconform.pre_commit.subprocess"
         )
@@ -41,7 +45,7 @@ class TestPreCommit(TestCase):
         self.addCleanup(plugin_main_patch.stop)
         self.plugin_main_mock.return_value = 0
 
-    def test_invalid_args(self) -> None:
+    def test_invalid_args(self: Self) -> None:
         test_args: list[tuple[list[str], str]] = [
             ([], "error: the following arguments are required: task"),
             (["--help"], "error: the following arguments are required: task"),
@@ -62,7 +66,7 @@ class TestPreCommit(TestCase):
                 self.assertEqual(exit_cm.exception.code, 2)
                 self.assertIn(error, stderr.getvalue())
 
-    def test_kubeconform_not_present(self) -> None:
+    def test_kubeconform_not_present(self: Self) -> None:
         test_args: list[dict[str, Any]] = [
             {"system": "Linux", "extra_env": {}},
             {"system": "Windows", "extra_env": {"SHELLOPTS": "igncr"}},
@@ -100,14 +104,14 @@ class TestPreCommit(TestCase):
                 )
                 self.assertEqual(return_code, 0)
 
-    def test_kubeconform_present(self) -> None:
+    def test_kubeconform_present(self: Self) -> None:
         return_code = helm_kubeconform.pre_commit.main(
             argv=["validate-charts"]
         )
         self.subprocess_mock.run.assert_not_called()
         self.assertEqual(return_code, 0)
 
-    def test_kubeconform_installation_failed(self) -> None:
+    def test_kubeconform_installation_failed(self: Self) -> None:
         self.path_mock.return_value.is_file.return_value = False
         self.subprocess_mock.run.side_effect = CalledProcessError(1, "error")
 
@@ -118,7 +122,7 @@ class TestPreCommit(TestCase):
         self.assertEqual(self.subprocess_mock.run.call_count, 1)
         self.assertEqual(return_code, 1)
 
-    def test_chart_files_validation(self) -> None:
+    def test_chart_files_validation(self: Self) -> None:
         return_code = helm_kubeconform.pre_commit.main(
             argv=["validate-charts", "file1", "file2"]
         )
@@ -130,7 +134,7 @@ class TestPreCommit(TestCase):
         )
         self.assertEqual(return_code, 0)
 
-    def test_chart_files_validation_failed(self) -> None:
+    def test_chart_files_validation_failed(self: Self) -> None:
         self.plugin_main_mock.return_value = 1
 
         return_code = helm_kubeconform.pre_commit.main(
@@ -144,7 +148,7 @@ class TestPreCommit(TestCase):
         )
         self.assertEqual(return_code, 1)
 
-    def test_values_files_validation(self) -> None:
+    def test_values_files_validation(self: Self) -> None:
         return_code = helm_kubeconform.pre_commit.main(
             argv=["validate-values", "file1", "file2"]
         )
@@ -156,7 +160,7 @@ class TestPreCommit(TestCase):
         )
         self.assertEqual(return_code, 0)
 
-    def test_values_files_validation_failed(self) -> None:
+    def test_values_files_validation_failed(self: Self) -> None:
         self.plugin_main_mock.return_value = 1
 
         return_code = helm_kubeconform.pre_commit.main(

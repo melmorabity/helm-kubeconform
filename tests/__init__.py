@@ -2,3 +2,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 """This file intentionally left blank."""
+
+from __future__ import annotations

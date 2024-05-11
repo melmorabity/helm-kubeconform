@@ -24,6 +24,8 @@ from typing import Sequence
 if typing.TYPE_CHECKING:  # pragma: no cover
     from argparse import Namespace
 
+    from typing_extensions import Self
+
 # Environment variables injected by Helm when running a plugin
 HELM_PLUGIN_DIR = os.getenv("HELM_PLUGIN_DIR", str(Path(__file__).parent))
 HELM_BIN = os.getenv("HELM_BIN", "helm")
@@ -177,7 +179,7 @@ def _command_flag(
 ) -> type[Action]:
     class _CommandFlagAction(Action):
         def __call__(
-            self,
+            self: Self,
             _parser: ArgumentParser,
             namespace: Namespace,
             values: str | Sequence[Any] | None = None,
