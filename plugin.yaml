@@ -1,6 +1,6 @@
 ---
 name: kubeconform
-version: 0.6.6.1
+version: 0.6.7.1
 usage: Validate Helm charts using Kubeconform
 description: This plugin validates Helm charts using Kubeconform
 ignoreFlags: false
