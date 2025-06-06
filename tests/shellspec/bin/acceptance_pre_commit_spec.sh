@@ -75,7 +75,19 @@ When run command pre-commit run -c "$PRE_COMMIT_CONF_FILE" helm-kubeconform --fi
 The status should be success
 The output should match pattern "*Helm charts validation*Passed*"
 The error should be blank
-The path "$PRE_COMMIT_HOME/repo"*"/$PYENV_SITE_PACKAGES_SUBDIR/helm_kubeconform/$KUBECONFORM_EXE" should be executable
+The path "$PRE_COMMIT_HOME${FILE_SEP}repo"*"${FILE_SEP}$PYENV_SITE_PACKAGES_SUBDIR${FILE_SEP}helm_kubeconform${FILE_SEP}$KUBECONFORM_EXE" should be executable
+echo "xxxxx" >&2
+find "$PRE_COMMIT_HOME" -name "kubeconform.*" -exec ls -l {} \; >&2
+echo "xxxxx" >&2
+set -x
+echo 1 >&2
+ls -l "$PRE_COMMIT_HOME${FILE_SEP}repo"*"${FILE_SEP}$PYENV_SITE_PACKAGES_SUBDIR${FILE_SEP}helm_kubeconform${FILE_SEP}$KUBECONFORM_EXE" >&2 || true
+echo 2 >&2
+ls -l "$PRE_COMMIT_HOME/repo"*"/$PYENV_SITE_PACKAGES_SUBDIR/helm_kubeconform/$KUBECONFORM_EXE" >&2 || true
+echo 3 >&2
+ls -l "$PRE_COMMIT_HOME"/repo*/"$PYENV_SITE_PACKAGES_SUBDIR"/helm_kubeconform/$KUBECONFORM_EXE >&2 || true
+set +x
+echo "xxxxx" >&2
 End
 Example "with invalid Kubernetes chart files in $OCP_CHART_DIR"
 {

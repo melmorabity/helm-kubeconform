@@ -19,10 +19,10 @@ from subprocess import CalledProcessError
 import sys
 import typing
 from typing import Any
-from typing import Sequence
 
 if typing.TYPE_CHECKING:  # pragma: no cover
     from argparse import Namespace
+    from collections.abc import Sequence
 
     from typing_extensions import Self
 
@@ -75,6 +75,8 @@ _KUBECONFORM_ARGPARSE_DEST = "kubeconform"
 
 logging.basicConfig(format=f"{HELM_PLUGIN_NAME}: [%(levelname)s] %(message)s")
 
+logger = logging.getLogger(__name__)
+
 
 # Validate a Helm chart using Kubeconform
 def _validate(
@@ -83,7 +85,7 @@ def _validate(
     helm_template_command = [HELM_BIN, "template", *helm_template_args]
     kubeconform_command = [KUBECONFORM_BIN, *kubeconform_args]
 
-    logging.debug("Running %s", " ".join(helm_template_command))
+    logger.debug("Running %s", " ".join(helm_template_command))
     try:
         # Render Helm chart on stdout
         helm_template_process = subprocess.run(
@@ -92,7 +94,7 @@ def _validate(
     except CalledProcessError as ex:
         return ex.returncode
 
-    logging.debug("Running %s", " ".join(kubeconform_command))
+    logger.debug("Running %s", " ".join(kubeconform_command))
     try:
         # - Validate rendered Helm chart using Kubeconform from stdin
         # - Redirect Kubeconform stdout to stderr
@@ -146,7 +148,7 @@ def _validate_from_helm_chart_files(
             [*helm_template_args, str(chart_dir)], kubeconform_args
         )
         if result > 0:
-            logging.error("Helm chart %s validation failed", chart_dir)
+            logger.error("Helm chart %s validation failed", chart_dir)
             return result
 
     return 0
@@ -166,7 +168,7 @@ def _validate_helm_values_files(
             kubeconform_args,
         )
         if result > 0:
-            logging.error("Helm values file %s validation failed", value_file)
+            logger.error("Helm values file %s validation failed", value_file)
             return result
 
     return 0
@@ -368,8 +370,8 @@ def main(
             values_files=validate_values_files,
         )
     except OSError as ex:
-        logging.error(ex)
-        return ex.errno
+        logger.error(ex)
+        return ex.errno or 1
     except CalledProcessError as ex:
         return ex.returncode
 
@@ -387,7 +389,7 @@ def main(
         kubeconform_args.append("-debug")
 
     if "--debug" in helm_template_args or "-debug" in kubeconform_args:
-        logging.getLogger().setLevel(logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
 
     if validate_chart_files:
         return _validate_from_helm_chart_files(

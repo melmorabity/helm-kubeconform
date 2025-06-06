@@ -1,6 +1,6 @@
 # Kubeconform Helm plugin
 
-[![Linting](https://github.com/melmorabity/helm-kubeconform/actions/workflows/linting.yml/badge.svg)](https://github.com/melmorabity/helm-kubeconform/actions/workflows/linting.yml) [![Unit tests](https://github.com/melmorabity/helm-kubeconform/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/melmorabity/helm-kubeconform/actions/workflows/unit_tests.yml) [![codecov](https://codecov.io/gh/melmorabity/helm-kubeconform/branch/main/graph/badge.svg)](https://codecov.io/gh/melmorabity/helm-kubeconform) [![Acceptance tests](https://github.com/melmorabity/helm-kubeconform/actions/workflows/acceptance_tests.yml/badge.svg)](https://github.com/melmorabity/helm-kubeconform/actions/workflows/acceptance_tests.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/melmorabity/helm-kubeconform/main.svg)](https://results.pre-commit.ci/latest/github/melmorabity/helm-kubeconform/main) [![CI](https://github.com/melmorabity/helm-kubeconform/actions/workflows/ci.yml/badge.svg)](https://github.com/melmorabity/helm-kubeconform/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/melmorabity/helm-kubeconform/graph/badge.svg)](https://codecov.io/gh/melmorabity/helm-kubeconform)
 
 helm-kubeconform is a [Helm](https://helm.sh/) plugin for validating Helm charts against the Kubernetes schemas, using [Kubeconform](https://github.com/yannh/kubeconform/).
 
@@ -18,8 +18,8 @@ The installer will download and install the Kubeconform binary available for the
 
 > **Warning**
 >
-> * This plugin supports Helm 3.10 or later
-> * This plugin requires Python 3.8 or later
+> * This plugin supports Helm 3.16 or later
+> * This plugin requires Python 3.9 or later
 > * `curl` or `wget` are required for installation.
 > * Since Helm plugin installation relies on the `sh` interpreter, it is only supported on Microsoft Windows through [Cywgin](https://www.cygwin.com/) or [MSYS2](https://www.msys2.org/).
 

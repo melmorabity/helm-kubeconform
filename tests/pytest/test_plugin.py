@@ -68,21 +68,27 @@ class TestRun(TestCase):
 
     def test_help(self: Self) -> None:
         stdout = StringIO()
-        with contextlib.redirect_stdout(stdout), self.assertRaises(
-            SystemExit
-        ) as exit_cm:
+        with (
+            contextlib.redirect_stdout(stdout),
+            self.assertRaises(SystemExit) as exit_cm,
+        ):
             helm_kubeconform.plugin.main(argv=["--help"])
 
         self.assertEqual(exit_cm.exception.code, 0)
 
         self.assertIn("--kube-version string", stdout.getvalue())
-        self.assertIn("-f strings, --values strings", stdout.getvalue())
         self.assertIn("--verify", stdout.getvalue())
         self.assertIn("--skip-tls-verify", stdout.getvalue())
         self.assertIn("--goroutines", stdout.getvalue())
         self.assertIn("--reject string", stdout.getvalue())
         self.assertIn("--strict", stdout.getvalue())
-        self.assertIn("-n string, --namespace string", stdout.getvalue())
+
+        if sys.version_info >= (3, 13):
+            self.assertIn("-n, --namespace string", stdout.getvalue())
+            self.assertIn("-f, --values strings", stdout.getvalue())
+        else:
+            self.assertIn("-n string, --namespace string", stdout.getvalue())
+            self.assertIn("-f strings, --values strings", stdout.getvalue())
 
         self.assertNotIn("--output-dir", stdout.getvalue())
         self.assertNotIn("--release-name", stdout.getvalue())
@@ -222,12 +228,13 @@ class TestRun(TestCase):
         self.subprocess_mock.run.assert_has_calls(calls=calls)
         self.assertEqual(self.subprocess_mock.run.call_count, 2)
         self.assertIn(
-            "DEBUG:root:Running helm template --debug chart",
+            "DEBUG:helm_kubeconform.plugin:Running helm template --debug "
+            "chart",
             context_manager.output,
         )
         self.assertIn(
-            f"DEBUG:root:Running {helm_kubeconform.plugin.KUBECONFORM_BIN}"
-            " -debug",
+            "DEBUG:helm_kubeconform.plugin:Running "
+            f"{helm_kubeconform.plugin.KUBECONFORM_BIN} -debug",
             context_manager.output,
         )
 
@@ -332,7 +339,8 @@ class TestRun(TestCase):
         )
         self.assertRegex(
             context_manager.output[0],
-            rf"ERROR:root:Helm chart ({test_paths_regex}) validation failed",
+            rf"ERROR:helm_kubeconform.plugin:Helm chart ({test_paths_regex}) "
+            r"validation failed",
         )
 
     def test_values_as_args(self: Self) -> None:
@@ -383,6 +391,7 @@ class TestRun(TestCase):
         self.assertEqual(return_code, 1)
         self.assertEqual(self.subprocess_mock.run.call_count, 1)
         self.assertIn(
-            "ERROR:root:Helm values file values1.yml validation failed",
+            "ERROR:helm_kubeconform.plugin:Helm values file values1.yml "
+            "validation failed",
             context_manager.output,
         )

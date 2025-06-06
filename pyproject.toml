@@ -2,7 +2,15 @@
 authors = [
   { name = "Mohamed El Morabity", email = "melmorabity@fedoraproject.org" },
 ]
-classifiers = ["Programming Language :: Python :: 3"]
+classifiers = [
+  "Environment :: Console",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: MacOS :: MacOS X",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Quality Assurance",
+]
 description = "Kubeconform Helm plugin"
 keywords = [
   "helm",
@@ -17,7 +25,7 @@ keywords = [
 license = { text = "GPL-3.0-or-later" }
 name = "helm-kubeconform"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 version = "0.6.7.1"
 
 [build-system]
@@ -29,18 +37,10 @@ pre-commit-helm-kubeconform = "helm_kubeconform.pre_commit:main"
 
 [project.optional-dependencies]
 dev = [
-  "Flake8-pyproject",
-  "bandit",
-  "black",
-  "flake8",
   "helm-kubeconform[test]",
   "mypy",
   "pre-commit",
-  "pydocstyle[toml]",
-  "pylint",
-  "pylint-per-file-ignores",
   "ruff",
-  "tox",
   "types-setuptools",
   "typing_extensions",
 ]
@@ -49,62 +49,17 @@ test = ["pre-commit", "pytest", "pytest-cov", "tox"]
 [tool.setuptools]
 packages = ["helm_kubeconform"]
 
-[tool.bandit]
-exclude_dirs = [".tox", ".venv", "build", "coverage"]
-skips = [
-  "B404", # import_subprocess
-  "B603", # subprocess_without_shell_equals_true
-  "B607", # start_process_with_partial_path
-]
-
-[tool.black]
-line-length = 79
-skip_magic_trailing_comma = true
-target-version = ["py38"]
-
 [tool.coverage.run]
 omit = ["tests/*"]
 
-[tool.flake8]
-exclude = [".tox", ".venv", "build", "coverage"]
-max-line-length = 79
-
-[tool.isort]
-add_imports = ["from __future__ import annotations"]
-force_single_line = true
-force_sort_within_sections = true
-line_length = 79
-profile = "black"
-py_version = 38
-
 [tool.mypy]
 exclude = ["build"]
-python_version = "3.8"
+python_version = "3.9"
 strict = true
 strict_optional = true
 warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_ignores = true
-
-[tool.pydocstyle]
-convention = "google"
-match_dir = "^(?!build$|tests$|\\.).*$"
-
-[tool.pylint.main]
-py-version = "3.8"
-
-[tool.pylint.master]
-ignore = [".tox", ".venv", "build", "coverage"]
-load-plugins = ["pylint_per_file_ignores"]
-
-[tool.pylint.format]
-max-line-length = 79
-
-[tool.pylint.messages_control]
-disable = ["magic-value-comparison"]
-
-[tool.pylint-per-file-ignores]
-tests = "missing-class-docstring,missing-function-docstring,missing-module-docstring"
 
 [tool.pytest.ini_options]
 addopts = [
@@ -115,7 +70,10 @@ addopts = [
 
 [tool.ruff]
 line-length = 79
-target-version = "py38"
+target-version = "py39"
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 ignore = [
@@ -134,20 +92,20 @@ strict = true
 force-single-line = true
 force-sort-within-sections = true
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = [
   "D",  # pydocstyle
   "PT", # flake8-pytest-style
 ]
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]
 min_version = 4.0
-envlist = py38,py39,py310,py311,py312
+envlist = py39,py310,py311,py312,py313
 skip_missing_interpreters = True
 
 [testenv]

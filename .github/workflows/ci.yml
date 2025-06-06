@@ -1,0 +1,118 @@
+---
+name: Unit tests
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
+  pull_request:
+jobs:
+  # lint:
+  #   name: Lint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.13'
+  #         cache: pip
+  #     - name: Install dependencies
+  #       run: pip install tox
+  #     - name: Cache pre-commit
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ~/.cache/pre-commit
+  #         key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+  #         restore-keys: pre-commit-
+  #     - name: Install ShellSpec
+  #       uses: ./.github/actions/shellspec
+  #     - name: Run linting
+  #       run: tox -e lint
+
+  # unit-tests:
+  #   name: Unit tests (Python ${{ matrix.python_version }})
+  #   runs-on: ubuntu-22.04
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       python_version:
+  #         - '3.9'
+  #         - '3.10'
+  #         - '3.11'
+  #         - '3.12'
+  #         - '3.13'
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Install Python ${{ matrix.python_version }}
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: ${{ matrix.python_version }}
+  #         cache: pip
+  #     - name: Install Tox
+  #       run: pip install tox
+  #     - name: Install ShellSpec
+  #       uses: ./.github/actions/shellspec
+  #     - name: Install Kcov
+  #       run: |
+  #         sudo apt-get install -y kcov
+  #     - name: Run unit tests
+  #       run: tox -e py${{ matrix.python_version }}
+  #     - if: matrix.python_version == '3.13'
+  #       name: Upload coverage reports to Codecov
+  #       uses: codecov/codecov-action@v5
+  #       with:
+  #         files: coverage/shellspec/cobertura.xml,coverage/pytest/cobertura.xml
+  #         fail_ci_if_error: true
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+
+  acceptance-tests:
+    name: Acceptance tests (${{ matrix.os }}, Helm ${{ matrix.helm_version }}, Python ${{ matrix.python_version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        helm_version:
+          # - 3.16.0
+          # - 3.17.0
+          - 3.18.0
+        os:
+          # - ubuntu-22.04
+          # - macos-latest
+          - windows-latest
+        python_version:
+          # - '3.9'
+          # - '3.10'
+          # - '3.11'
+          # - '3.12'
+          - '3.13'
+    steps:
+      - if: matrix.os == 'windows-latest'
+        run: git config --global core.autocrlf input
+      - name: Checkout
+        uses: actions/checkout@v4
+      - if: matrix.os == 'windows-latest'
+        name: Install Cygwin
+        uses: cygwin/cygwin-install-action@v5
+        with:
+          packages: curl,unzip
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python_version }}
+          cache: pip
+      - name: Install Tox
+        run: pip install tox
+      - name: Install Helm ${{ matrix.helm_version }}
+        uses: azure/setup-helm@v4.3.0
+        with:
+          version: ${{ matrix.helm_version }}
+      - name: Install ShellSpec
+        uses: ./.github/actions/shellspec
+        with:
+          shell: ${{ matrix.os == 'windows-latest' && 'sh -o igncr -e {0}' || 'sh' }}
+      - name: Run acceptance tests
+        run: tox -e py${{ matrix.python_version }} -e acceptance

@@ -92,7 +92,7 @@ Example "with unsupported option --insecure-skip-tls-verify"
 When run command helm kubeconform chart --insecure-skip-tls-verify
 The status should be failure
 The output should be blank
-The error should include "Error: unknown flag: --insecure-skip-tls-verify"
+The error should include "error: unrecognized arguments: --insecure-skip-tls-verify"
 End
 End
 

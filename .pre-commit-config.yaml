@@ -5,7 +5,7 @@ repos:
       - id: check-hooks-apply
       - id: check-useless-excludes
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -23,49 +23,34 @@ repos:
         args:
           - --fix=lf
       - id: trailing-whitespace
-  - repo: https://github.com/ComPWA/mirrors-taplo
-    rev: v0.8.1
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.2.3
     hooks:
-      - id: taplo
+      - id: yamlfmt
         args:
-          - format
+          - --mapping=2
+          - --sequence=4
+          - --offset=2
+        exclude: ^tests/fixtures/.+?/templates/.+?\.yaml$
+  - repo: https://github.com/ComPWA/mirrors-taplo
+    rev: v0.9.3
+    hooks:
+      - id: taplo-lint
+      - id: taplo-format
+        args:
           - --option=reorder_arrays=true
           - --option=reorder_keys=true
-  - repo: https://github.com/psf/black
-    rev: 24.8.0
-    hooks:
-      - id: black
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.1
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - Flake8-pyproject
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.5.7
+    rev: v0.11.13
     hooks:
-      - id: ruff
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.9
+      - id: ruff-format
+      - id: ruff-check
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.27.2
     hooks:
-      - id: bandit
-        args:
-          - -c
-          - pyproject.toml
-        additional_dependencies:
-          - .[toml]
-  - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.3.0
-    hooks:
-      - id: pydocstyle
-        additional_dependencies:
-          - .[toml]
+      - id: gitleaks
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.8.0-1
+    rev: v3.11.0-1
     hooks:
       - id: shfmt-src
         args:
@@ -79,21 +64,17 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.41.0
+    rev: v0.45.0
     hooks:
       - id: markdownlint
         args:
           - --disable=MD013
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
   - repo: local
     hooks:
-      - id: pylint
-        name: Pylint
-        entry: pylint
-        args:
-          - --enable-all-extensions
-        language: system
-        types:
-          - python
       - id: mypy
         name: Mypy
         entry: mypy
@@ -104,3 +85,11 @@ repos:
         name: Syntax check of ShellSpec specfiles
         language: system
         entry: shellspec --no-kcov --syntax-check
+
+ci:
+  skip:
+    - mypy
+    - shellspec-syntax-check
+    - taplo-lint
+  autoupdate_commit_msg: 'chore(pre-commit): pre-commit autoupdate'
+  autofix_commit_msg: 'fix(pre-commit): auto fixes from pre-commit.com hooks'

@@ -58,9 +58,10 @@ class TestPreCommit(TestCase):
 
                 stderr = StringIO()
 
-                with contextlib.redirect_stderr(stderr), self.assertRaises(
-                    SystemExit
-                ) as exit_cm:
+                with (
+                    contextlib.redirect_stderr(stderr),
+                    self.assertRaises(SystemExit) as exit_cm,
+                ):
                     helm_kubeconform.pre_commit.main(argv=argv)
 
                 self.assertEqual(exit_cm.exception.code, 2)
