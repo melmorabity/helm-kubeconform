@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # SPDX-FileCopyrightText: © 2023 Mohamed El Morabity
 # SPDX-License-Identifier: GPL-3.0-or-later
